@@ -12,6 +12,13 @@ service:
   externalPort: 1880
   internalPort: 1880
   NodePort: 32701
+persistence:
+  name: node-red
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  nfs_path: /export/vmimage/DevLib/icp-pv/node-red
+  nfs_server: 172.20.6.3
 ingress:
   enabled: false
   # Used to create an Ingress record.

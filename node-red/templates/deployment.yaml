@@ -21,6 +21,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+          volumeMounts:
+            - name: {{ template "name" . }}-data
+              mountPath: /data
+              {{- if .Values.persistence.subPath }}
+              subPath: {{ .Values.persistence.subPath }}
+              {{- end }}
           livenessProbe:
             httpGet:
               path: /
@@ -35,3 +41,8 @@ spec:
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
     {{- end }}
+      volumes:
+        - name: {{ template "name" . }}-data
+          persistentVolumeClaim:
+            claimName: {{ template "name" . }}-pvc
+
