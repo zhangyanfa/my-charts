@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "name" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.externalTcp }}
+      targetPort: {{ .Values.service.internalTcp }}
+      nodePort: {{ .Values.service.nodePortTcp }}
+      protocol: TCP
+      name: {{ .Values.service.name }}-mqtt
+    - port: {{ .Values.service.externalSsl }}
+      targetPort: {{ .Values.service.internalSsl }}
+      protocol: TCP
+      name: {{ .Values.service.name }}-ssl
+    - port: {{ .Values.service.externalWebSocket }}
+      targetPort: {{ .Values.service.internalWebSocket }}
+      protocol: TCP
+      name: {{ .Values.service.name }}-ws
+    - port: {{ .Values.service.externalWebSocketSsl }}
+      targetPort: {{ .Values.service.internalWebSocketSsl }}
+      protocol: TCP
+      name: {{ .Values.service.name }}-wssl
+    - port: {{ .Values.service.externalHttp }}
+      targetPort: {{ .Values.service.internalHttp }}
+      nodePort: {{ .Values.service.nodePortHttp }}
+      protocol: TCP
+      name: {{ .Values.service.name }}-http
+  selector:
+    app: {{ template "name" . }}
+    release: {{ .Release.Name }}
