@@ -20,8 +20,9 @@ persistence:
   nfs_path: /export/vmimage/DevLib/icp-pv/iot-bc
   nfs_server: 172.20.6.3
 ingress:
-  enabled: false
+  enabled: true
   # Used to create an Ingress record.
+  path: /iot-bc
   hosts:
     - chart-example.local
   annotations:
